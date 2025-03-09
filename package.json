@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "lucide-react": "^0.479.0",
     "next": "15.2.0",
     "next-auth": "^5.0.0-beta.25",
     "openai": "^4.86.2",
     "pinata-web3": "^0.5.4",
+    "pixelarticons": "^1.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

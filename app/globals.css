@@ -1,17 +1,37 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+	color: var(--foreground);
+	background: var(--background);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	@apply min-h-screen flex flex-col;
+}
+
+@layer components {
+	.btn {
+		@apply flex items-center gap-2 px-3 py-2 border rounded cursor-pointer transition-colors;
+
+		& .btn-icon {
+			@apply w-4 h-4;
+		}
+
+		&.btn-subtle {
+			@apply bg-neutral-100/25 border-neutral-100;
+
+			&:hover {
+				@apply bg-neutral-100;
+			}
+		}
+	}
 }

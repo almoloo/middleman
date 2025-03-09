@@ -15,13 +15,15 @@ export default async function DashboardPage() {
 	// const questions = await generateQuestions();
 	// console.log('🎈', questions);
 
+	const updateUserData = async () => {};
+
 	return (
 		<div>
 			<h1>DashboardPage</h1>
 			{userData && (
 				<>
 					<h2>User data</h2>
-					<pre>{JSON.stringify(userData)}</pre>
+					{/* <pre>{JSON.stringify(userData)}</pre> */}
 				</>
 			)}
 			<hr />

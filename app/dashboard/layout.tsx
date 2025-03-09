@@ -1,4 +1,7 @@
+import Footer from '@/components/footer';
+import Header from '@/components/header';
 import { auth } from '@/lib/auth';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -12,5 +15,17 @@ export default async function DashboardLayout({
 	if (!session) {
 		redirect('/');
 	}
-	return children;
+	return (
+		<>
+			<Header />
+			<main className="flex flex-col grow bg-red-100">
+				<nav>
+					<Link href="/dashboard">Question</Link>
+					<Link href="/dashboard/data">Your Data</Link>
+				</nav>
+				{children}
+			</main>
+			<Footer />
+		</>
+	);
 }
