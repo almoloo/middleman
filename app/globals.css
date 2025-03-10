@@ -20,17 +20,29 @@ body {
 
 @layer components {
 	.btn {
-		@apply flex items-center gap-2 px-3 py-2 border rounded cursor-pointer transition-colors;
+		@apply inline-flex items-center gap-2 px-3 py-2 border rounded cursor-pointer transition-colors shrink-0 whitespace-nowrap;
 
 		& .btn-icon {
 			@apply w-4 h-4;
 		}
 
-		&.btn-subtle {
-			@apply bg-neutral-100/25 border-neutral-100;
+		&.btn-round {
+			@apply rounded-full px-4;
+		}
 
-			&:hover {
-				@apply bg-neutral-100;
+		&.btn-subtle {
+			@apply bg-neutral-100/25 border-neutral-100 hover:bg-neutral-100;
+
+			&.active {
+				@apply bg-neutral-900 text-white border-neutral-900;
+			}
+		}
+
+		&.btn-nav {
+			@apply px-5 rounded-none border-t-0 border-x-0 border-b-2 border-b-neutral-300 hover:bg-indigo-400/5 hover:border-b-indigo-400/50;
+
+			&.active {
+				@apply border-b-indigo-400 bg-indigo-400/10;
 			}
 		}
 	}

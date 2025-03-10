@@ -7,7 +7,7 @@ import { LogOutIcon } from 'lucide-react';
 
 export default function Header() {
 	return (
-		<header className="flex items-center justify-between px-5 py-5">
+		<header className="flex items-center justify-between px-5 py-3">
 			<Link href="/dashboard">
 				<Image
 					src={logo}

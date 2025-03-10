@@ -12,21 +12,22 @@ export default async function DashboardPage() {
 	const questionThread = await fetchQuestionThread(session?.user?.email!);
 	console.log('q thread', questionThread);
 
-	// const questions = await generateQuestions();
-	// console.log('🎈', questions);
-
 	const updateUserData = async () => {};
 
 	return (
 		<div>
-			<h1>DashboardPage</h1>
-			{userData && (
-				<>
-					<h2>User data</h2>
-					{/* <pre>{JSON.stringify(userData)}</pre> */}
-				</>
-			)}
-			<hr />
+			<h1>Answer questions about yourself to train your AI assistant</h1>
+			<h2 className="text-sm font-bold">How This Works</h2>
+			<p>
+				You'll be presented with questions one at a time. You can either
+				answer or skip each question. All answered questions will help
+				train your personal AI assistant to represent you better on your
+				LUKSO Grid.
+			</p>
+			<small>
+				The more questions you answer about yourself the better your
+				assistant will be able to represent you.
+			</small>
 			<div>
 				<QuestionBox
 					questionThreadId={questionThread}

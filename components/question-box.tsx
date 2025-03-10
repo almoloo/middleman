@@ -2,7 +2,7 @@
 
 import { generateQuestions, updateUserData } from '@/lib/actions';
 import { QAObject, UserInfo } from '@/lib/definitions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Question from '@/components/question';
 
 interface QuestionBoxProps {
@@ -20,25 +20,52 @@ export default function QuestionBox({
 	const [questions, setQuestions] = useState<string[] | null>(null);
 	const [answers, setAnswers] = useState<QAObject[]>([]);
 	const [skipped, setSkipped] = useState<string[]>([]);
+	const [fetchingQ, setFetchingQ] = useState(false);
 
-	const generateQuestionsHandler = async () => {
+	const generateQuestionsHandler = async (
+		uData?: QAObject[],
+		skData?: string[],
+		num?: number,
+		push: boolean = false
+	) => {
 		try {
+			setFetchingQ(true);
 			const generatedQuestions = await generateQuestions(
 				questionThreadId,
-				userData?.data,
-				userData?.skipped,
-				10
+				uData ?? userData?.data,
+				skData ?? userData?.skipped,
+				num ?? 10
 			);
 			console.log('questions: ', generatedQuestions);
-			setQuestions(generatedQuestions?.questions!);
+			if (push) {
+				setQuestions((prev) => [
+					...(prev ?? []),
+					...generatedQuestions?.questions!,
+				]);
+			} else {
+				setQuestions(generatedQuestions?.questions!);
+			}
 		} catch (error: unknown) {
 			console.error(error);
+		} finally {
+			setFetchingQ(false);
 		}
 	};
 
-	const goToNextQuestion = () => {
+	const goToNextQuestion = async () => {
 		const newQuestions = questions?.filter((q, i) => i !== 0);
 		setQuestions(newQuestions || null);
+		// 	RETRIEVE 10 MORE QUESTION
+		if (!questions || questions.length <= 3) {
+			const modifiedUserData = [...(userData?.data ?? []), ...answers];
+			const modifiedSkipped = [...(userData?.skipped ?? []), ...skipped];
+			const fetchedQuestions = await generateQuestionsHandler(
+				modifiedUserData,
+				modifiedSkipped,
+				10,
+				true
+			);
+		}
 	};
 
 	const addAnswer = (item: QAObject) => {
@@ -71,14 +98,8 @@ export default function QuestionBox({
 	return (
 		<div>
 			<p>Answer some questions</p>
-			<p>thread id: {questionThreadId}</p>
-			<p>email: {email}</p>
-			{answers.length > 0 && <pre>{JSON.stringify(answers)}</pre>}
-			<hr />
-			{skipped.length > 0 && <pre>{JSON.stringify(skipped)}</pre>}
-			<hr />
 			{!questions && (
-				<button onClick={generateQuestionsHandler}>
+				<button onClick={() => generateQuestionsHandler()}>
 					Generate questions
 				</button>
 			)}
