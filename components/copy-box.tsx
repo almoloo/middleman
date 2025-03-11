@@ -12,6 +12,7 @@ export default function CopyBox({ text }: { text: string }) {
 				readOnly
 				value={text}
 				className="grow"
+				onClick={(e) => e.currentTarget.select()}
 			/>
 			<button
 				className="text-sm font-bold hover:bg-indigo-400/20 active:bg-indigo-400/30 cursor-pointer rounded px-2 py-1"

@@ -82,4 +82,20 @@ body {
 			@apply bg-emerald-400/10 border-emerald-400/20 text-emerald-950;
 		}
 	}
+
+	.bubble {
+		@apply px-3 py-2 rounded-xl shadow-lg w-fit translate-y-0 opacity-100 transition-all;
+
+		&:not(.active) {
+			@apply translate-y-2.5 opacity-0;
+		}
+
+		&.bubble-request {
+			@apply bg-stone-100 text-neutral-700 self-end rounded-br-sm text-sm max-w-1/2;
+		}
+
+		&.bubble-response {
+			@apply bg-indigo-500 text-white self-start rounded-bl-sm max-w-3/4;
+		}
+	}
 }
