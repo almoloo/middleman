@@ -20,7 +20,7 @@ export default async function DashboardPage() {
 
 	return (
 		<div className="flex flex-col gap-2 leading-relaxed">
-			<Alert
+			{/* <Alert
 				title="Your Widget URL"
 				variant="info"
 				description="Your personal AI assistant is ready to be added to your
@@ -35,7 +35,7 @@ export default async function DashboardPage() {
 						process.env.NEXT_PUBLIC_DOMAIN
 					}/frame/${encodeEmail(session?.user?.email!)}`}
 				/>
-			</Alert>
+			</Alert> */}
 			<h2 className="font-bold flex items-center gap-2">
 				<CircleHelpIcon className="w-5 h-5 text-neutral-500" />
 				How This Works
