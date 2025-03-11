@@ -1,9 +1,9 @@
 interface AlertProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	title: string;
 	description: string;
 	icon?: React.ReactNode;
-	variant: 'info';
+	variant: 'info' | 'success';
 }
 
 export default function Alert({
@@ -19,7 +19,7 @@ export default function Alert({
 			<div>
 				<h3 className="alert-title">{title}</h3>
 				<p className="alert-description">{description}</p>
-				<div className="mt-3">{children}</div>
+				{children && <div className="mt-3">{children}</div>}
 			</div>
 		</div>
 	);

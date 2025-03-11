@@ -5,10 +5,13 @@ import { QAObject, UserInfo } from '@/lib/definitions';
 import { useEffect, useState } from 'react';
 import Question from '@/components/question';
 import {
+	CheckCheckIcon,
 	CloudUploadIcon,
 	ListTodoIcon,
+	LoaderIcon,
 	LoaderPinwheelIcon,
 } from 'lucide-react';
+import Alert from './alert';
 
 interface QuestionBoxProps {
 	questionThreadId: string;
@@ -26,6 +29,8 @@ export default function QuestionBox({
 	const [answers, setAnswers] = useState<QAObject[]>([]);
 	const [skipped, setSkipped] = useState<string[]>([]);
 	const [fetchingQ, setFetchingQ] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
 
 	const generateQuestionsHandler = async (
 		uData?: QAObject[],
@@ -35,6 +40,7 @@ export default function QuestionBox({
 	) => {
 		try {
 			setFetchingQ(true);
+			setSubmitted(false);
 			const generatedQuestions = await generateQuestions(
 				questionThreadId,
 				uData ?? userData?.data,
@@ -90,14 +96,18 @@ export default function QuestionBox({
 		};
 
 		try {
+			setSubmitting(true);
 			const updatedData = await updateUserData(email, data);
 			console.log('✅', updatedData);
 			setAnswers([]);
 			setSkipped([]);
 			setQuestions(null);
 			setUserData(updatedData.data);
+			setSubmitted(true);
 		} catch (error: unknown) {
 			console.error(error);
+		} finally {
+			setSubmitting(false);
 		}
 	};
 	return (
@@ -128,13 +138,21 @@ export default function QuestionBox({
 					</div>
 				)}
 			</section>
-			{!questions && (
+			{!questions && !submitting && (
 				<section className="flex flex-col gap-3">
 					<p className="text-sm">
 						Click the button below to generate your questions. You
 						can answer as many questions as you like - the more you
 						answer, the better your assistant will understand you.
 					</p>
+					{submitted && (
+						<Alert
+							title="Upload Successful"
+							description="All your answers have been successfully uploaded to IPFS and your personal AI assistant has been trained."
+							variant="success"
+							icon={<CheckCheckIcon className="alert-icon" />}
+						/>
+					)}
 					<button
 						className="btn btn-primary w-full relative"
 						onClick={() => generateQuestionsHandler()}
@@ -146,12 +164,12 @@ export default function QuestionBox({
 							</div>
 						)}
 						<span className={fetchingQ ? 'invisible' : ''}>
-							Generate Questions
+							Generate {submitted && 'More'} Questions
 						</span>
 					</button>
 				</section>
 			)}
-			{questions && questions.length > 0 && (
+			{questions && questions.length > 0 && !submitting && (
 				<section className="flex flex-col gap-1">
 					<h3 className="text-sm font-bold text-neutral-500">
 						Question {answers.length + skipped.length + 1}
@@ -171,8 +189,13 @@ export default function QuestionBox({
 							<button
 								className="btn btn-success"
 								onClick={handleSubmitAnswers}
+								disabled={submitting}
 							>
-								<CloudUploadIcon className="btn-icon" />
+								{submitting ? (
+									<LoaderPinwheelIcon className="btn-icon animate-spin" />
+								) : (
+									<CloudUploadIcon className="btn-icon" />
+								)}
 								Submit Answers
 							</button>
 						</div>
@@ -184,6 +207,15 @@ export default function QuestionBox({
 					<LoaderPinwheelIcon className="w-5 h-5 animate-spin" />
 					<p className="text-sm font-bold">
 						Generating more questions for you...
+					</p>
+				</section>
+			)}
+			{submitting && (
+				<section className="flex justify-center items-center gap-3 py-10">
+					<LoaderIcon className="h-6 w-6 animate-spin" />
+					<p className="text-sm">
+						Please wait while your answers are being uploaded to
+						IPFS.
 					</p>
 				</section>
 			)}
