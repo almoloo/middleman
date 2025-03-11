@@ -3,6 +3,10 @@ import { auth } from '@/lib/auth';
 import React from 'react';
 import { generateQuestions } from '@/lib/actions';
 import QuestionBox from '@/components/question-box';
+import { CircleAlertIcon, CircleHelpIcon, LinkIcon } from 'lucide-react';
+import Alert from '@/components/alert';
+import { encodeEmail } from '@/lib/utils';
+import CopyBox from '@/components/copy-box';
 
 export default async function DashboardPage() {
 	const session = await auth();
@@ -15,19 +19,59 @@ export default async function DashboardPage() {
 	const updateUserData = async () => {};
 
 	return (
-		<div>
-			<h1>Answer questions about yourself to train your AI assistant</h1>
-			<h2 className="text-sm font-bold">How This Works</h2>
+		<div className="flex flex-col gap-2 leading-relaxed">
+			<Alert
+				title="Your Widget URL"
+				variant="info"
+				description="Your personal AI assistant is ready to be added to your
+						LUKSO Grid! Below is the unique URL for your Middleman
+						widget. Copy this URL and add it to your Universal
+						Profile`s Grid to make your assistant available to
+						visitors."
+				// icon={<LinkIcon className="alert-icon" />}
+			>
+				<CopyBox
+					text={`${
+						process.env.NEXT_PUBLIC_DOMAIN
+					}/frame/${encodeEmail(session?.user?.email!)}`}
+				/>
+			</Alert>
+			<h2 className="font-bold flex items-center gap-2">
+				<CircleHelpIcon className="w-5 h-5 text-neutral-500" />
+				How This Works
+			</h2>
 			<p>
-				You'll be presented with questions one at a time. You can either
-				answer or skip each question. All answered questions will help
-				train your personal AI assistant to represent you better on your
-				LUKSO Grid.
+				Welcome to Middleman's assistant training process. This page
+				will guide you through building your personal AI representative
+				for your LUKSO Universal Profile. Here's what you need to know:
 			</p>
-			<small>
-				The more questions you answer about yourself the better your
-				assistant will be able to represent you.
-			</small>
+			<ol className="list-decimal list-inside flex flex-col gap-1">
+				<li>
+					<strong>Answer the question</strong> - Provide as much
+					detail as you feel comfortable sharing. Detailed, thorough
+					answers will result in a more knowledgeable assistant that
+					can better represent you.
+				</li>
+				<li>
+					<strong>Skip the question</strong> - If you prefer not to
+					answer a particular question, you can skip it and move on to
+					the next one. Your assistant will simply not have
+					information on this topic and will remember not to bring it
+					up ever again.
+				</li>
+			</ol>
+
+			<h2 className="font-bold flex items-center gap-2">
+				<CircleAlertIcon className="w-5 h-5 text-neutral-500" />
+				Important information about your data:
+			</h2>
+			<p>
+				All answers you provide will be stored publicly on IPFS
+				(InterPlanetary File System) and linked to your Universal
+				Profile. This means anyone with access to your assistant can
+				potentially access this information. Only share what you're
+				comfortable making public.
+			</p>
 			<div>
 				<QuestionBox
 					questionThreadId={questionThread}

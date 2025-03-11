@@ -4,6 +4,11 @@ import { generateQuestions, updateUserData } from '@/lib/actions';
 import { QAObject, UserInfo } from '@/lib/definitions';
 import { useEffect, useState } from 'react';
 import Question from '@/components/question';
+import {
+	CloudUploadIcon,
+	ListTodoIcon,
+	LoaderPinwheelIcon,
+} from 'lucide-react';
 
 interface QuestionBoxProps {
 	questionThreadId: string;
@@ -96,26 +101,92 @@ export default function QuestionBox({
 		}
 	};
 	return (
-		<div>
-			<p>Answer some questions</p>
+		<article className="flex flex-col gap-4 border bg-slate-50 border-slate-400/20 rounded-lg p-5">
+			<section className="flex items-center justify-between">
+				<div className="flex items-center gap-2">
+					<ListTodoIcon className="h-5 w-5" />
+					<h3 className="text-sm font-bold">Training Form</h3>
+				</div>
+				{questions && (
+					<div className="flex flex-col items-end text-xs text-neutral-500">
+						{/* <span>{userData?.data.length} answers synced</span> */}
+						<span
+							className={`${
+								answers.length > 0 && 'text-emerald-400'
+							}`}
+						>
+							{answers.length} answer
+							{answers.length === 1 ? '' : 's'} to sync
+						</span>
+						<span
+							className={`${
+								skipped.length > 0 && 'text-emerald-400'
+							}`}
+						>
+							{skipped.length} skipped to sync
+						</span>
+					</div>
+				)}
+			</section>
 			{!questions && (
-				<button onClick={() => generateQuestionsHandler()}>
-					Generate questions
-				</button>
+				<section className="flex flex-col gap-3">
+					<p className="text-sm">
+						Click the button below to generate your questions. You
+						can answer as many questions as you like - the more you
+						answer, the better your assistant will understand you.
+					</p>
+					<button
+						className="btn btn-primary w-full relative"
+						onClick={() => generateQuestionsHandler()}
+						disabled={fetchingQ}
+					>
+						{fetchingQ && (
+							<div className="flex justify-center items-center absolute top-0 right-0 bottom-0 left-0">
+								<LoaderPinwheelIcon className="btn-icon animate-spin" />
+							</div>
+						)}
+						<span className={fetchingQ ? 'invisible' : ''}>
+							Generate Questions
+						</span>
+					</button>
+				</section>
 			)}
 			{questions && questions.length > 0 && (
-				<>
-					<h1>Question:</h1>
+				<section className="flex flex-col gap-1">
+					<h3 className="text-sm font-bold text-neutral-500">
+						Question {answers.length + skipped.length + 1}
+					</h3>
 					<Question
 						question={questions[0]}
 						addAnswer={addAnswer}
 						skipQuestion={skipQuestion}
 					/>
-					<button onClick={handleSubmitAnswers}>
-						Submit answers
-					</button>
-				</>
+					<div className="mt-3">
+						<p className="text-sm text-neutral-500">
+							Once you submit, your answers will be securely
+							stored on IPFS and linked to your Universal Profile.
+							You can always update your assistant later.
+						</p>
+						<div className="flex justify-end">
+							<button
+								className="btn btn-success"
+								onClick={handleSubmitAnswers}
+							>
+								<CloudUploadIcon className="btn-icon" />
+								Submit Answers
+							</button>
+						</div>
+					</div>
+				</section>
 			)}
-		</div>
+			{questions && questions.length === 0 && fetchingQ && (
+				<section className="flex items-center justify-center text-neutral-500 gap-3">
+					<LoaderPinwheelIcon className="w-5 h-5 animate-spin" />
+					<p className="text-sm font-bold">
+						Generating more questions for you...
+					</p>
+				</section>
+			)}
+		</article>
 	);
 }

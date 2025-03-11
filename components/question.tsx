@@ -25,20 +25,34 @@ export default function Question({
 	};
 
 	return (
-		<form action={handleSubmit}>
-			<p>{question}</p>
-			<input
-				type="text"
+		<form
+			action={handleSubmit}
+			className="flex flex-col border border-neutral-400/50 rounded-lg p-3 gap-2"
+		>
+			<blockquote className="text-xl font-bold font-serif">
+				{question}
+			</blockquote>
+			<textarea
 				name="answer"
-				placeholder="Your answer"
-			/>
-			<button type="submit">Submit answer</button>
-			<button
-				type="button"
-				onClick={() => handleSkip(question)}
-			>
-				Skip question
-			</button>
+				placeholder="Type your answer here..."
+				className="bg-white/90 border-l-4 border-l-indigo-400/20 p-2"
+				required
+			></textarea>
+			<div className="flex justify-end gap-1">
+				<button
+					type="button"
+					className="btn btn-subtle btn-sm"
+					onClick={() => handleSkip(question)}
+				>
+					Skip
+				</button>
+				<button
+					type="submit"
+					className="btn btn-primary btn-sm"
+				>
+					Next Question
+				</button>
+			</div>
 		</form>
 	);
 }
