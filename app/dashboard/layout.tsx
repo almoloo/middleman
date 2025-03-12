@@ -39,7 +39,7 @@ export default async function DashboardLayout({
 						}/frame/${encodeEmail(session?.user?.email!)}`}
 					/>
 				</Alert>
-				<nav className="flex my-4">
+				<nav className="flex my-5">
 					<NavLink
 						text="Training Area"
 						url="/dashboard"

@@ -12,7 +12,7 @@ export default function VersionItem({ hash, url, version }: VersionItemProps) {
 		<div className="grid grid-cols-5 items-center gap-3">
 			<div className="col-span-1 aspect-square flex flex-col items-center justify-center shrink-0 bg-indigo-400/10 rounded">
 				<span className="text-xl font-bold">{version}</span>
-				<small className="text-xs text-neutral-500">version</small>
+				<small className="text-xs text-neutral-500">ver.</small>
 			</div>
 			<div className="col-span-4 flex flex-col gap-1">
 				<span className="break-words text-xs">ipfs://{hash}</span>
