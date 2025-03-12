@@ -2,9 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import OrbAnimationJSON from '@/public/orb-animation.json';
-// import Lottie from 'lottie-react';
 
-const Lottie = dynamic(() => import('lottie-react'));
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function OrbAnimation() {
 	return (

@@ -1,10 +1,5 @@
 @import 'tailwindcss';
 
-@theme {
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
-}
-
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
@@ -40,6 +35,10 @@ body {
 			&.active {
 				@apply bg-neutral-900 text-white border-neutral-900;
 			}
+		}
+
+		&.btn-light {
+			@apply bg-white border-white hover:bg-slate-200 text-neutral-800;
 		}
 
 		&.btn-success {
