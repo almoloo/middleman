@@ -84,7 +84,7 @@ body {
 	}
 
 	.bubble {
-		@apply px-3 py-2 rounded-xl shadow-lg w-fit translate-y-0 opacity-100 transition-all;
+		@apply px-3 py-2 rounded-xl shadow-lg w-fit translate-y-0 opacity-100 transition-all delay-300;
 
 		&:not(.active) {
 			@apply translate-y-2.5 opacity-0;

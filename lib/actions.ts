@@ -71,9 +71,7 @@ export const generateQuestions = async (
 	if (run.status === 'completed') {
 		const messages = await openai.beta.threads.messages.list(run.thread_id);
 		const messageBlock = messages.data[0].content[0] as TextContentBlock;
-		console.log('🎈', messageBlock);
 		const questions = messageBlock.text.value;
-		console.log('🎈', questions);
 		return JSON.parse(questions) as { questions: string[] };
 	} else if (run.status === 'failed') {
 		throw new Error('Failed to generate new questions, please try again.');
@@ -106,4 +104,52 @@ export const updateUserData = async (email: string, data: UserInfo) => {
 		data: newData,
 		ipfs: upload.IpfsHash,
 	};
+};
+
+export const createChatThread = async (email: string) => {
+	const prevData = await fetchUserData(email);
+
+	if (!prevData) {
+		throw new Error('Failed to fetch user data.');
+	}
+
+	const thread = await openai.beta.threads.create();
+
+	let prompt = `
+		# Available data on the current profile:
+		${JSON.stringify(prevData)}
+	`;
+
+	const message = await openai.beta.threads.messages.create(thread.id, {
+		role: 'user',
+		content: prompt,
+	});
+
+	let run = await openai.beta.threads.runs.createAndPoll(thread.id, {
+		assistant_id: process.env.OPENAI_GENERATE_QUESTIONS_ASSISTANT!,
+		instructions: `Use the provided user data to answer questions about the profile owner. Do not make up any information. If the relevant data is missing, simply state that you don't have that information. You may engage in light chit-chat and answer questions about yourself, but do not respond to anything outside your intended purpose.Respond in plain JSON in the format {answer: string}. No extra content`,
+	});
+
+	if (run.status === 'completed') {
+		return thread.id;
+	} else if (run.status === 'failed') {
+		throw new Error('Failed to start the conversation.');
+	}
+};
+
+export const askQuestion = async (question: string, threadId: string) => {
+	const message = openai.beta.threads.messages.create(threadId, {
+		role: 'user',
+		content: question,
+	});
+
+	const run = await openai.beta.threads.runs.createAndPoll(threadId, {
+		assistant_id: process.env.OPENAI_CHATBOT_ASSISTANT!,
+	});
+
+	if (run.status === 'completed') {
+		const messages = await openai.beta.threads.messages.list(run.thread_id);
+		const messageBlock = messages.data[0].content[0] as TextContentBlock;
+		return messageBlock.text.value;
+	}
 };

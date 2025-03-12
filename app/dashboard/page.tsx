@@ -20,22 +20,6 @@ export default async function DashboardPage() {
 
 	return (
 		<div className="flex flex-col gap-2 leading-relaxed">
-			{/* <Alert
-				title="Your Widget URL"
-				variant="info"
-				description="Your personal AI assistant is ready to be added to your
-						LUKSO Grid! Below is the unique URL for your Middleman
-						widget. Copy this URL and add it to your Universal
-						Profile`s Grid to make your assistant available to
-						visitors."
-				// icon={<LinkIcon className="alert-icon" />}
-			>
-				<CopyBox
-					text={`${
-						process.env.NEXT_PUBLIC_DOMAIN
-					}/frame/${encodeEmail(session?.user?.email!)}`}
-				/>
-			</Alert> */}
 			<h2 className="font-bold flex items-center gap-2">
 				<CircleHelpIcon className="w-5 h-5 text-neutral-500" />
 				How This Works
