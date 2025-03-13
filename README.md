@@ -1,6 +1,6 @@
 # Middleman
 
-![Middleman Cover Image](https://placehold.co/1200x600?text=Middleman+Cover+Image)
+![Middleman Cover Image](/docs/gh-cover.png)
 
 > The AI-powered bridge between your Lukso blockchain profile and your visitors.
 
@@ -15,7 +15,9 @@
 
 Middleman is a decentralized application that enhances Lukso blockchain profiles with an AI-powered interactive widget. Users answer AI-generated questions about themselves, which are securely stored on IPFS. Visitors can then interact with a personalized AI assistant that answers questions based on the profile owner's information.
 
-![Middleman Flow Diagram](https://placehold.co/800x400?text=Middleman+Flow+Diagram)
+[🌐 middleman.almoloo.com](https://middleman.almoloo.com)
+
+[🎥 View demo on YouTube](https://www.youtube.com/watch?v=AGRT9Gjdqvs)
 
 ## ✨ Features
 
@@ -30,7 +32,7 @@ Middleman is a decentralized application that enhances Lukso blockchain profiles
 -   Seamlessly integrates with Lukso's grid
 -   Lightweight embed that loads fast on any device
 
-![Widget Demo](https://placehold.co/600x400?text=Widget+Demo)
+![Widget Demo](/docs/gh-widget.png)
 
 ### 💬 Interactive AI Assistant
 
