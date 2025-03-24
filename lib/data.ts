@@ -31,13 +31,17 @@ export const fetchQuestionThread = async (email: string) => {
 export const fetchUserData = async (email: string) => {
 	const files = await pinata
 		.listFiles()
-		.keyValue('email', email)
+		.keyValue('email', email, 'eq')
 		.keyValue('type', IPFSJSONType.UserInfo);
 
-	if (files.length === 0) return null;
+	const filteredFiles = files.filter(
+		(elem) => elem.metadata.keyvalues?.email === email
+	);
+
+	if (filteredFiles.length === 0) return null;
 
 	// const lastFile = files[files.length - 1];
-	const lastFile = files.reduce((prev, current) =>
+	const lastFile = filteredFiles.reduce((prev, current) =>
 		prev &&
 		prev.metadata.keyvalues?.version > current.metadata.keyvalues?.version
 			? prev
@@ -57,9 +61,13 @@ export const fetchUserDataIPFS = async (email: string) => {
 		.keyValue('email', email)
 		.keyValue('type', IPFSJSONType.UserInfo);
 
-	if (files.length === 0) return null;
+	const filteredFiles = files.filter(
+		(elem) => elem.metadata.keyvalues?.email === email
+	);
 
-	return files.map((file) => {
+	if (filteredFiles.length === 0) return null;
+
+	return filteredFiles.map((file) => {
 		return {
 			hash: file.ipfs_pin_hash,
 			url: pinata.gateways.convert(`ipfs://${file.ipfs_pin_hash}`),
