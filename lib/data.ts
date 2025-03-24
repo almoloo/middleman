@@ -14,12 +14,16 @@ export const fetchQuestionThread = async (email: string) => {
 		.keyValue('email', email)
 		.keyValue('type', IPFSJSONType.QuestionThread);
 
-	if (files.length === 0) {
+	const filteredFiles = files.filter(
+		(elem) => elem.metadata.keyvalues?.email === email
+	);
+
+	if (filteredFiles.length === 0) {
 		const { threadId } = await createQuestionThread(email);
 		return threadId;
 	}
 
-	const lastFile = files[files.length - 1];
+	const lastFile = filteredFiles[filteredFiles.length - 1];
 
 	const ipfsHash = lastFile.ipfs_pin_hash;
 
